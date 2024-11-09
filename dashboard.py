@@ -1,5 +1,4 @@
-# dashboard.py - Updated version with fixes for resource charts and recommendations
-
+# dashboard.py
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -37,25 +36,26 @@ def calculate_resource_recommendations(df):
         urgent_resources = []
         for resource, need in needs.items():
             stock = stocks[resource]
-            # Mark resource as urgent if stock is less than 2x the need
-            if stock < need * 2:
-                urgent_resources.append(f"{resource.capitalize()} ({stock:.0f}/{need:.0f})")
+            # Mark resource as urgent if stock is less than 3x the need
+            if stock < need * 3:
+                days_left = stock / need if need > 0 else float('inf')
+                urgent_resources.append(f"{resource.capitalize()} (Stock: {stock:.0f}, Need: {need:.0f}, {days_left:.1f} days left)")
         
         # Calculate resource depletion rate
         depletion_warning = []
         for resource, stock in stocks.items():
-            if stock < needs[resource] * 3:  # Less than 3 times the need
-                hours_left = stock / needs[resource] if needs[resource] > 0 else float('inf')
-                if hours_left < 24:
-                    depletion_warning.append(f"{resource.capitalize()}: {hours_left:.1f}h left")
+            if stock < needs[resource] * 4:  # Increased threshold
+                days_left = stock / needs[resource] if needs[resource] > 0 else float('inf')
+                if days_left < 3:  # Changed from hours to days
+                    depletion_warning.append(f"{resource.capitalize()}: {days_left:.1f} days left")
         
-        if severity > 80:
+        if severity > 70:
             priority = "CRITICAL"
-            action = f"Immediate intervention required. {', '.join(depletion_warning)}"
-        elif severity > 60:
+            action = f"Immediate intervention required. {', '.join(depletion_warning)}" if depletion_warning else "Immediate intervention required."
+        elif severity > 50:
             priority = "HIGH"
-            action = f"Urgent attention needed. {', '.join(depletion_warning)}"
-        elif severity > 40:
+            action = f"Urgent attention needed. {', '.join(depletion_warning)}" if depletion_warning else "Urgent attention needed."
+        elif severity > 30:
             priority = "MODERATE"
             action = "Monitor closely"
         else:
@@ -73,7 +73,7 @@ def calculate_resource_recommendations(df):
     return sorted(recommendations, key=lambda x: x['severity'], reverse=True)
 
 def create_resource_chart(df):
-    """Create an updated resource comparison chart"""
+    """Create resource comparison chart"""
     resource_data = []
     
     for _, row in df.iterrows():
@@ -152,7 +152,7 @@ def main():
                                     title='Regional Severity Scores')
                 st.plotly_chart(fig_severity, use_container_width=True)
 
-                # Resource Status - Using the new chart function
+                # Resource Status
                 fig_resources = create_resource_chart(df)
                 st.plotly_chart(fig_resources, use_container_width=True)
 
