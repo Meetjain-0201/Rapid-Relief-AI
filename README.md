@@ -1,4 +1,5 @@
-# Rapid-Relief-AI
+# Major League Hacking Hackathon
+# Project Title: Rapid-Relief-AI
 Disaster Relief and Resource Management Using Generative AI
 
 Project Description
