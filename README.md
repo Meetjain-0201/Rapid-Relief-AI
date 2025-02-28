@@ -9,7 +9,7 @@ Core Idea
 Leverage generative models to simulate and generate maps or routes for resource allocation, focusing on real-world factors like road access, population distribution, and time constraints. This tool could then help agencies make faster, more efficient decisions during critical situations.
 
 Steps:
-Keep all files in one loaction (main.py, data_generation.py, severity_calculation.py, resource_allocation.py, dashboard.py and gan_model.py)
+Keep all files in one location (main.py, data_generation.py, severity_calculation.py, resource_allocation.py, dashboard.py and gan_model.py)
 
 1) Start MongoDB if it's not running
 
