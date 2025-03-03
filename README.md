@@ -13,11 +13,11 @@ Keep all files in one location (main.py, data_generation.py, severity_calculatio
 
 1) Start MongoDB if it's not running
 
-2) Run your main.py in one terminal:
-python main.py
+2) Train your GAN Model in one terminal:
+python train_gan.py
 
-3) Run your gan_model.py in same terminal:
-python gan_model.py
+3) Run your gan_generator.py in same terminal:
+python gan_generator.py
 
 4) Run the dashboard in another terminal:
 streamlit run dashboard.py
